@@ -10,9 +10,9 @@ body { margin: 0; background: #fff; color: #1f2a37; font-family: Verdana, Geneva
 .s-header { border-bottom: 1px solid #e2e6ea; background: #fff; position: sticky; top: 0; z-index: 10; }
 .s-header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 14px; padding-bottom: 10px; }
 .s-brand { display: flex; align-items: center; gap: 12px; color: #1f2a37; text-decoration: none; }
-.s-brand b { display: block; font-family: Georgia, serif; font-size: 22px; letter-spacing: .14em; line-height: 1; }
-.s-brand small { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #5b6675; margin-top: 3px; }
-.s-mark { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #205867; color: #205867; display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-weight: 700; font-size: 22px; }
+.s-logo { display: block; height: 54px; width: auto; }
+.s-brand small { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #5b6675; padding-left: 14px; border-left: 1px solid #e2e6ea; line-height: 32px; }
+@media (max-width: 480px) { .s-logo { height: 36px; } .s-brand small { display: none; } }
 .s-utility { display: flex; align-items: center; gap: 18px; font-size: 13px; }
 .s-utility a { color: #5b6675; text-decoration: none; }
 .s-utility a:hover { color: #205867; }
@@ -49,7 +49,7 @@ body { margin: 0; background: #fff; color: #1f2a37; font-family: Verdana, Geneva
 
 .s-footer { background: #0c4564; color: #fff; padding: 40px 0 20px; font-size: 14px; }
 .s-footer-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px; }
-.s-footer-brand { font-family: Georgia, serif; font-size: 24px; letter-spacing: .14em; }
+.s-footer-logo { display: block; height: 52px; width: auto; margin-bottom: 14px; }
 .s-footer p { color: rgba(255,255,255,.8); line-height: 1.6; }
 .s-footer h4 { font-size: 15px; margin: 0 0 10px; }
 .s-footer ul { list-style: none; margin: 0; padding: 0; }

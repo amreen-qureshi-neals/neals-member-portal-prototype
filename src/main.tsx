@@ -82,8 +82,8 @@ function App() {
       <header className="s-header">
         <div className="s-wrap s-header-row">
           <a className="s-brand" href={page("home")}>
-            <span className="s-mark" aria-hidden="true">N</span>
-            <span><b>NEALS</b><small>Member Portal</small></span>
+            <img src={`${import.meta.env.BASE_URL}neals-logo.png`} alt="NEALS" className="s-logo" />
+            <small>Member Portal</small>
           </a>
           <nav className="s-utility" aria-label="Account">
             <a href={page("SignUpForEmails")}>Mailing list</a>
@@ -127,7 +127,7 @@ function App() {
       <footer className="s-footer">
         <div className="s-wrap s-footer-cols">
           <div>
-            <b className="s-footer-brand">NEALS</b>
+            <img src={`${import.meta.env.BASE_URL}neals-logo-white.png`} alt="NEALS" className="s-footer-logo" />
             <p>Network of Excellence for ALS<br />33 Arch Street, 16th Floor<br />Boston, MA 02110</p>
           </div>
           <div>
