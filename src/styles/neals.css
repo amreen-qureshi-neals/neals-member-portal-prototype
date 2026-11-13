@@ -180,3 +180,14 @@
 .neals .n-people li { display: flex; flex-direction: column; padding: 6px 0; font-size: 14px; }
 .neals .n-people span { color: var(--n-soft); font-size: 13px; }
 @media (max-width: 760px) { .neals .n-split { grid-template-columns: 1fr; } }
+
+/* ---------- committee details ---------- */
+.neals .n-small { font-size: 13px; color: var(--n-soft); }
+.neals .n-quote { margin: 18px 0 0; padding: 16px 20px; background: var(--n-brand-soft); border-left: 4px solid var(--n-brand); border-radius: 0 10px 10px 0; font-family: var(--n-serif); font-size: 17px; line-height: 1.5; }
+.neals .n-quote b { display: block; font-family: var(--n-sans); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--n-brand); margin-bottom: 6px; }
+.neals .n-goals { margin: 0; padding: 0; list-style: none; counter-reset: goal; }
+.neals .n-goals li { counter-increment: goal; position: relative; padding: 0 0 12px 40px; margin: 0; }
+.neals .n-goals li::before { content: counter(goal); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--n-brand-soft); color: var(--n-brand); font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.neals .n-people a { font-size: 13px; word-break: break-all; }
+.neals .n-code { display: inline-block; font-family: ui-monospace, Menlo, Consolas, monospace; font-weight: 700; background: var(--n-surface); border: 1px dashed var(--n-brand); border-radius: 6px; padding: 1px 8px; letter-spacing: .02em; }
+.neals .n-album-plain .n-album-label { padding: 18px 16px; }

@@ -37,4 +37,4 @@ See `dist-ym/MANIFEST.md` after exporting. In short: paste `neals.css` into **We
 
 Yellow **Content needed** boxes in the prototype mark gaps (committee text, SOPs, newsletters, lectures). They are never included in the YM export.
 
-See also `SITE_PLAN.md` (structure) and `MIGRATION.md` (WildApricot → YM tracker).
+See also `SITE_PLAN.md` (structure).

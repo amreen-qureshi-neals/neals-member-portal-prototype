@@ -1,6 +1,7 @@
-import { webinars, communityWebinarsUrl, platform } from "../content/webinars";
+import { webinars, communityWebinarsUrl, platform, viewingCode2026 } from "../content/webinars";
+import { lecturesContact } from "../content/documents";
 import { Fold, Grid, HubCard, JumpNav, Lede, Notice, Row, Rows, Todo, fmtDate } from "../components/ui";
-import { page } from "../lib/links";
+import { email, page, isRedacted } from "../lib/links";
 
 export function LearningHub() {
   return (
@@ -29,6 +30,7 @@ export function Webinars() {
         const list = webinars.filter((w) => w.date.startsWith(y));
         return (
           <Fold key={y} id={`w${y}`} title={`${y} webinars`} meta={`${list.length} recordings`} open={i === 0}>
+            {y === "2026" && <ViewingCode code={viewingCode2026} what="the 2026 webinars" />}
             <Rows>
               {list.map((w) => (
                 <Row key={w.date + w.title} icon="video" href={w.url} title={w.title} sub={w.subtitle}
@@ -43,16 +45,22 @@ export function Webinars() {
 }
 
 export function Lectures() {
+  const c = email(lecturesContact);
   return (
     <div className="neals">
-      <Lede sub="Each listing shows the date, the speaker or host, and how to register or apply.">
-        Upcoming lectures, training and opportunities for NEALS members.
+      <Lede sub="Lectures, online series and events of interest to NEALS members.">
+        Open opportunities from across the ALS community.
       </Lede>
-      <Todo>Copy the current listings from the WildApricot page “Upcoming Lectures & Opportunities”. Each one becomes a row like the example below.</Todo>
+      <Todo>The WildApricot page had no current listings. Each new listing becomes a row like the example below: date, title, host, and a link to register.</Todo>
       <Rows>
         <Row icon="calendar" title="Example: Lecture title" sub="Speaker name, institution" meta={<span>Date · Virtual</span>} />
       </Rows>
-      <Notice>Have an opportunity to share with the network? Contact NEALS to have it listed here.</Notice>
+      <Notice title="Share an opportunity">NEALS members are invited to submit upcoming lectures, series and events. <a href={c.href}>Send the details by email</a>{!isRedacted() && <> ({c.label})</>}.</Notice>
     </div>
   );
+}
+
+/** Shows a Vimeo viewing password. Members-only pages; replaced with a placeholder in the public demo. */
+export function ViewingCode({ code, what }: { code: string; what: string }) {
+  return <Notice title="Viewing code">Use the code <span className="n-code">{isRedacted() ? "••••••••" : code}</span> to watch {what}.</Notice>;
 }

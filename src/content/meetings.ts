@@ -82,3 +82,15 @@ export const albums: Album[] = [
   { year: "2019", url: "#", cover: cdn("2019_am_photo_icon.png") },
 ];
 export const albumsNote = "No photo albums for 2024 or the virtual 2020 and 2021 meetings.";
+
+/** Older albums, from the WildApricot Photos page (no cover images). */
+export const olderAlbums: Album[] = [
+  { year: "2018", url: "#" },
+  { year: "2017", url: "#" },
+  { year: "2016", url: "https://thegallerystudios.zenfolio.com/neals16", note: "Zenfolio" },
+];
+
+/** Notes shown with the 2026 recordings (from the WildApricot 2026 Recordings page). */
+export const recordingNotes2026 = {
+  certificates: "The deadline for certification requests has passed. No additional certificates will be issued for eligible events.",
+};

@@ -10,7 +10,15 @@ export type Webinar = {
 const gtw = (id: string) => `#`;
 const DUP = "Same recording link as another webinar: confirm the right video";
 
+/** Vimeo password for member-only 2026 videos (members-only page; stripped from the public demo). */
+/** secret(): marks a value the public demo must never contain (stripped at build / copy time). */
+const secret = (v: string) => v;
+export const viewingCode2026 = secret("");
+
 export const webinars: Webinar[] = [
+  { date: "2026-09-01", title: "Voice Back: Innovation in ALS Communication", subtitle: "Technology in ALS Committee", url: "#" },
+  { date: "2026-08-17", title: "Advanced Secretion Management", subtitle: "Palliative Care Committee", url: "#" },
+
   { date: "2024-07-26", title: "Nutrition Focused Physical Exam for the Patient with ALS", url: "#" },
   { date: "2024-06-07", title: "Palliative Care Webinar on ALS-Specific Healthcare Directives", url: "#" },
   { date: "2024-04-16", title: "NEALS Member Update at the AAN", url: "#" },

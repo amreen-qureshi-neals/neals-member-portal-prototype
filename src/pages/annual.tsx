@@ -1,5 +1,7 @@
 import { recordings, countVideos, totalSeconds } from "../content/recordings";
-import { pastMeetings, upcoming, albums, albumsNote } from "../content/meetings";
+import { pastMeetings, upcoming, albums, albumsNote, olderAlbums, recordingNotes2026 } from "../content/meetings";
+import { viewingCode2026 } from "../content/webinars";
+import { ViewingCode } from "./learning";
 import { Button, Fold, Grid, HubCard, JumpNav, Lede, Notice, Row, Rows, Section, TodoChip, VideoCard, fmtDur, Icon } from "../components/ui";
 import { ext, page } from "../lib/links";
 
@@ -53,7 +55,9 @@ export function Recordings() {
       </Lede>
       <JumpNav page="annualmeetingrecordings" items={recordings.map((r) => ({ id: `y${r.year}`, label: String(r.year) }))} />
 
-      <Section id={`y${latest.year}`} title={String(latest.year)} meta={<>{countVideos(latest)} recordings · {fmtDur(totalSeconds(latest)) || latest.dates} · {latest.dates}</>}>
+      <Section id={`y${latest.year}`} title={String(latest.year)} meta={<>{countVideos(latest)} recordings · {fmtDur(totalSeconds(latest))} · {latest.dates}</>}>
+        <ViewingCode code={viewingCode2026} what="recordings of 2026 member events" />
+        <p className="n-small">{recordingNotes2026.certificates}</p>
         {yearBlock(latest)}
       </Section>
 
@@ -99,6 +103,14 @@ export function Photos() {
           <a key={a.year} className="n-album" href={ext(a.url ?? "#")} target="_blank" rel="noopener">
             <span className="n-album-cover">{a.cover && <img src={a.cover} alt="" loading="lazy" />}</span>
             <span className="n-album-label"><b>{a.year}</b> Annual Meeting <Icon name="external" className="n-icon n-icon-sm" /></span>
+          </a>
+        ))}
+      </Grid>
+      <h3 className="n-overline">Earlier albums</h3>
+      <Grid size="sm">
+        {olderAlbums.map((a) => (
+          <a key={a.year} className="n-album n-album-plain" href={ext(a.url ?? "#")} target="_blank" rel="noopener">
+            <span className="n-album-label"><b>{a.year}</b> Annual Meeting{a.note ? ` · ${a.note}` : ""} <Icon name="external" className="n-icon n-icon-sm" /></span>
           </a>
         ))}
       </Grid>

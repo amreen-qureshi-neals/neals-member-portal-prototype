@@ -12,8 +12,9 @@ export const governance: DocGroup[] = [
   {
     id: "sops",
     title: "Standard Operating Procedures (SOPs)",
-    docs: [],
-    empty: "SOP documents are listed on the WildApricot page but haven't been moved to YourMembership yet.",
+    docs: [
+      { title: "Educational Webinar SOP", description: "Version 1.0", url: "#", type: "PDF", updated: "January 2018", todo: "Hosted on WildApricot: download and re-upload to YM" },
+    ],
   },
   {
     id: "policies",
@@ -24,7 +25,7 @@ export const governance: DocGroup[] = [
   },
 ];
 
-export const governanceContact = "staff@neals.invalid";
+export const governanceContact = "name@example.org";
 export const governanceContactName = "NEALS staff";
 
 /** Existing YM group file libraries (from the YM custom pages list). */
@@ -35,3 +36,18 @@ export const toolkits: Doc[] = [
   { title: "Meeting Materials", description: "File library", todo: "YM group library" },
   { title: "Committee Overview", description: "File library", todo: "YM group library" },
 ];
+
+/** Member newsletter archive (WildApricot email templates: they disappear with WildApricot). */
+export type Issue = { date: string; title: string; url: string };
+const waNews = (path: string) => `#`;
+export const NEWSLETTER_TODO = "Newsletters are WildApricot email pages: save each one as a PDF and upload it to YM before WildApricot closes";
+export const newsletters: Issue[] = [
+  { date: "2023-12-19", title: "Winter Newsletter", url: waNews("NEALS%20Member%20Newsletter") },
+  { date: "2023-10-19", title: "Fall Newsletter", url: waNews("NEALS%20Member%20Newsletter%20Fall%2023") },
+  { date: "2023-06-30", title: "Summer Newsletter", url: waNews("NEALS%20Member%20Newsletter-Summer%2023") },
+  { date: "2022-07-27", title: "Summer Newsletter", url: waNews("NEALS%20Member%20Newsletter-Summer%2022") },
+  { date: "2022-01-24", title: "Winter Newsletter", url: waNews("NEALS%20Member%20Newsletter-Winter%202022") },
+  { date: "2021-07-29", title: "Summer Newsletter", url: waNews("NEALS%20Member%20Newsletter-Summer%2021") },
+];
+
+export const lecturesContact = "name@example.org";

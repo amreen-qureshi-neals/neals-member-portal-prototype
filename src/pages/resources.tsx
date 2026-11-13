@@ -1,5 +1,5 @@
-import { governance, governanceContact, governanceContactName, toolkits } from "../content/documents";
-import { Grid, HubCard, JumpNav, Lede, Notice, Row, Rows, Section, Todo } from "../components/ui";
+import { governance, governanceContact, governanceContactName, toolkits, newsletters, NEWSLETTER_TODO } from "../content/documents";
+import { Grid, HubCard, JumpNav, Lede, Notice, Row, Rows, Section, Todo, fmtDate } from "../components/ui";
 import { email, page } from "../lib/links";
 
 export function ResourcesHub() {
@@ -48,15 +48,19 @@ export function Bylaws() {
 export function Newsletters() {
   return (
     <div className="neals">
-      <Lede sub="Issues are listed newest first and open as PDFs.">
-        Stay up to date with the NEALS member newsletter.
+      <Lede sub="Browse past issues for key moments and updates from across the network, newest first.">
+        Catch up on past issues of the NEALS member newsletter.
       </Lede>
-      <Todo>Download the newsletter issues from WildApricot (Files tab), upload them to YM's Resource Manager, then list them here by year.</Todo>
-      <Section title="2026" meta="Example layout">
-        <Rows>
-          <Row icon="doc" title="Example: NEALS Member Newsletter, Fall 2026" meta={<span className="n-row-host">PDF</span>} />
-        </Rows>
-      </Section>
+      <Todo>{NEWSLETTER_TODO}. The old page had an empty 2024 heading: add any 2024–2026 issues.</Todo>
+      {[...new Set(newsletters.map((n) => n.date.slice(0, 4)))].map((y) => (
+        <Section key={y} title={y} meta={`${newsletters.filter((n) => n.date.startsWith(y)).length} issues`}>
+          <Rows>
+            {newsletters.filter((n) => n.date.startsWith(y)).map((n) => (
+              <Row key={n.date} icon="doc" title={`${n.title} ${y}`} href={n.url} meta={<span>{fmtDate(n.date)}</span>} />
+            ))}
+          </Rows>
+        </Section>
+      ))}
       <Notice>Want the newsletter by email? <a href={page("SignUpForEmails")}>Join the mailing list</a>.</Notice>
     </div>
   );

@@ -21,9 +21,12 @@ rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
 execSync(`git archive HEAD | tar -x -C "${out}"`, { stdio: "inherit" });
 
-const MEMBER_ONLY = /https?:\/\/(?:www\.)?(?:dropbox\.com|vimeo\.com|attendee\.gotowebinar\.com|neals\.wildapricot\.org)[^"'`\s)|]*/g;
+// Internal working notes (names, data errors, file inventory) stay private
+for (const f of ["MIGRATION.md"]) rmSync(join(out, f), { force: true });
+
+const MEMBER_ONLY = /https?:\/\/(?:www\.)?(?:dropbox\.com|vimeo\.com|attendee\.gotowebinar\.com|neals\.wildapricot\.org|(?:[\w-]+\.)+box\.com)[^"'`\s)|]*/g;
 const YM_FILES = /\/resource\/resmgr\/memberresourcedocs\/[^"'`\s)|]*/g;
-const EMAILS = /[\w.+-]+@neals\.org/g;
+const EMAILS = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
 const STAFF_NAMES = [/Jennifer Heinly/g];
 
 const redact = (s) => {
@@ -31,8 +34,8 @@ const redact = (s) => {
     .replace(MEMBER_ONLY, "#")
     .replace(/neals\.wildapricot\.org\/[^\s|`)"']*/g, "(old WildApricot page)")
     .replace(YM_FILES, "#")
-    .replace(EMAILS, "staff@neals.invalid")
-    .replace(/\b(share|vm|gtw)\("[^"]*"\)/g, '$1("")');
+    .replace(EMAILS, "name@example.org")
+    .replace(/\b(share|vm|gtw|secret)\("[^"]*"\)/g, '$1("")');
   for (const n of STAFF_NAMES) r = r.replace(n, "NEALS staff");
   return r;
 };
@@ -54,7 +57,7 @@ const tsconfig = join(out, "tsconfig.json");
 writeFileSync(tsconfig, readFileSync(tsconfig, "utf8").replace('"noUnusedParameters": true', '"noUnusedParameters": false'));
 
 // Safety check: nothing sensitive may remain anywhere in the copy (except the redaction rules themselves)
-const LEAKS = /dropbox\.com\/(?:s|sh|scl)\/|vimeo\.com\/(?:share\/)?\d|vimeo\.com\/share\/[0-9a-f-]{8}|gotowebinar\.com\/recording\/\d|wildapricot\.org\/|memberresourcedocs\/\w|rlkey=|[\w.+-]+@neals\.org|Heinly/;
+const LEAKS = /dropbox\.com\/(?:s|sh|scl)\/|vimeo\.com\/(?:share\/)?\d|vimeo\.com\/share\/[0-9a-f-]{8}|gotowebinar\.com\/recording\/\d|wildapricot\.org\/|memberresourcedocs\/\w|rlkey=|secret\("[^"]+"\)|box\.com\/v\/|[\w.+-]+@(?!example\.org)[\w-]+\.(?:org|edu|com)|Heinly/;
 const leaks = walk(out)
   .filter((p) => !p.endsWith("make-public-copy.mjs") && !p.endsWith("vite.config.ts") && !p.endsWith("package-lock.json"))
   .filter((p) => LEAKS.test(readFileSync(p, "utf8")));

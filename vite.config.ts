@@ -7,9 +7,9 @@ import react from "@vitejs/plugin-react";
  * journals) and thumbnail images are kept.
  */
 function redactContent(): Plugin {
-  const MEMBER_ONLY = /https?:\/\/(?:www\.)?(?:dropbox\.com|vimeo\.com|attendee\.gotowebinar\.com|neals\.wildapricot\.org)[^"'`\s)]*/g;
+  const MEMBER_ONLY = /https?:\/\/(?:www\.)?(?:dropbox\.com|vimeo\.com|attendee\.gotowebinar\.com|neals\.wildapricot\.org|(?:[\w-]+\.)+box\.com)[^"'`\s)]*/g;
   const YM_FILES = /\/resource\/resmgr\/memberresourcedocs\/[^"'`\s)]*/g;
-  const EMAILS = /[\w.+-]+@neals\.org/g;
+  const EMAILS = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
   return {
     name: "neals-redact-content",
     enforce: "pre",
@@ -18,9 +18,9 @@ function redactContent(): Plugin {
       return code
         .replace(MEMBER_ONLY, "#")
         .replace(YM_FILES, "#")
-        .replace(EMAILS, "staff@neals.invalid")
+        .replace(EMAILS, "name@example.org")
         // video IDs passed to the link helpers (share/vm/gtw) would let someone rebuild the URL
-        .replace(/\b(share|vm|gtw)\("[^"]*"\)/g, '$1("")');
+        .replace(/\b(share|vm|gtw|secret)\("[^"]*"\)/g, '$1("")');
     },
   };
 }
