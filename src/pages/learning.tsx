@@ -1,66 +1,80 @@
 import { webinars, communityWebinarsUrl, platform, viewingCode2026 } from "../content/webinars";
 import { lecturesContact } from "../content/documents";
-import { Fold, Grid, HubCard, JumpNav, Lede, Notice, Row, Rows, Todo, fmtDate } from "../components/ui";
+import { A, Flag, Index, Lede, Note, OnThisPage, Page, Section, Todo, fmtDate } from "../components/ui";
 import { email, page, isRedacted } from "../lib/links";
 
 export function LearningHub() {
   return (
-    <div className="neals">
-      <Lede sub="Upcoming events, lectures and opportunities, and the library of past member-only webinars.">
-        Keep learning with the NEALS network.
+    <Page id="learning">
+      <Lede sub="Find upcoming NEALS events and outside opportunities, or catch up on past member webinars.">
+        Events, lectures and member webinars.
       </Lede>
-      <Grid size="md">
-        <HubCard href={page("calendar")} icon="calendar" title="Events calendar" text="Upcoming NEALS events, workshops and deadlines." />
-        <HubCard href={page("lectures")} icon="star" title="Lectures & opportunities" text="Upcoming lectures, training and opportunities for members." />
-        <HubCard href={page("webinars")} icon="video" title="Member webinars" text={`${webinars.length} past member-only webinars, from 2021 onward.`} />
-      </Grid>
-    </div>
+      <Index items={[
+        { href: page("calendar"), title: "Events calendar", desc: "Upcoming NEALS events, workshops and member meetings." },
+        { href: page("lectures"), title: "Lectures & opportunities", desc: "Lectures, online series and events of interest to members, from across the ALS community." },
+        { href: page("webinars"), title: "Member webinars", desc: `Recordings of ${webinars.length} member-only webinars, 2021 to 2026.` },
+      ]} />
+    </Page>
   );
 }
 
 export function Webinars() {
   const years = [...new Set(webinars.map((w) => w.date.slice(0, 4)))];
   return (
-    <div className="neals">
-      <Lede sub={<>These webinars are for NEALS members. Looking for webinars for people living with ALS? Visit <a href={communityWebinarsUrl} target="_blank" rel="noopener">Community Education Webinars on neals.org</a>.</>}>
-        Catch up on past NEALS member webinars.
+    <Page id="webinars">
+      <Lede sub={<>Recordings open in a new tab. Webinars for people living with ALS are on <A href={communityWebinarsUrl}>neals.org</A>.</>}>
+        Recordings of past NEALS member-only webinars.
       </Lede>
-      <JumpNav page="webinars" items={years.map((y) => ({ id: `w${y}`, label: y }))} />
-      {years.map((y, i) => {
+      <OnThisPage page="webinars" items={years.map((y) => ({ id: `w${y}`, label: y }))} />
+      {years.map((y) => {
         const list = webinars.filter((w) => w.date.startsWith(y));
         return (
-          <Fold key={y} id={`w${y}`} title={`${y} webinars`} meta={`${list.length} recordings`} open={i === 0}>
+          <Section key={y} id={`w${y}`} title={y} meta={`${list.length} webinar${list.length > 1 ? "s" : ""}`}>
             {y === "2026" && <ViewingCode code={viewingCode2026} what="the 2026 webinars" />}
-            <Rows>
-              {list.map((w) => (
-                <Row key={w.date + w.title} icon="video" href={w.url} title={w.title} sub={w.subtitle}
-                  meta={<><span>{fmtDate(w.date)}</span><span className="n-row-host">{platform(w.url)}</span></>} note={w.todo} />
-              ))}
-            </Rows>
-          </Fold>
+            <table className="n-table n-table-dated">
+              <caption className="n-sr">{y} member webinars</caption>
+              <thead><tr><th scope="col">Date</th><th scope="col">Webinar</th><th scope="col" className="n-hide-sm">Hosted on</th></tr></thead>
+              <tbody>
+                {list.map((w) => (
+                  <tr key={w.date + w.title}>
+                    <td className="n-date">{fmtDate(w.date, { month: "short", day: "numeric" })}</td>
+                    <td>
+                      <A href={w.url}>{w.title}</A>
+                      {w.subtitle && <div className="n-small">{w.subtitle}</div>}
+                      <Flag text={w.todo} />
+                    </td>
+                    <td className="n-muted n-hide-sm">{platform(w.url)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Section>
         );
       })}
-    </div>
+    </Page>
   );
 }
 
 export function Lectures() {
   const c = email(lecturesContact);
   return (
-    <div className="neals">
+    <Page id="lectures">
       <Lede sub="Lectures, online series and events of interest to NEALS members.">
-        Open opportunities from across the ALS community.
+        Opportunities from across the ALS community.
       </Lede>
-      <Todo>The WildApricot page had no current listings. Each new listing becomes a row like the example below: date, title, host, and a link to register.</Todo>
-      <Rows>
-        <Row icon="calendar" title="Example: Lecture title" sub="Speaker name, institution" meta={<span>Date · Virtual</span>} />
-      </Rows>
-      <Notice title="Share an opportunity">NEALS members are invited to submit upcoming lectures, series and events. <a href={c.href}>Send the details by email</a>{!isRedacted() && <> ({c.label})</>}.</Notice>
-    </div>
+      <Todo>The WildApricot page had no current listings. Each new listing becomes a row in the table below: date, title, host, and a link to register.</Todo>
+      <table className="n-table n-table-dated">
+        <thead><tr><th scope="col">Date</th><th scope="col">Opportunity</th><th scope="col" className="n-hide-sm">Format</th></tr></thead>
+        <tbody>
+          <tr><td className="n-date n-muted">—</td><td className="n-muted">No upcoming listings right now.</td><td className="n-hide-sm" /></tr>
+        </tbody>
+      </table>
+      <Note title="Share an opportunity.">Members can submit upcoming lectures, series and events: <a href={c.href}>{isRedacted() ? "email NEALS" : c.label}</a>.</Note>
+    </Page>
   );
 }
 
 /** Shows a Vimeo viewing password. Members-only pages; replaced with a placeholder in the public demo. */
 export function ViewingCode({ code, what }: { code: string; what: string }) {
-  return <Notice title="Viewing code">Use the code <span className="n-code">{isRedacted() ? "••••••••" : code}</span> to watch {what}.</Notice>;
+  return <Note title="Viewing code:"><span className="n-code">{isRedacted() ? "hidden in demo" : code}</span>. Enter it to watch {what}.</Note>;
 }

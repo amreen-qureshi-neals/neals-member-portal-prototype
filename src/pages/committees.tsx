@@ -1,93 +1,83 @@
 import { committees, committeesIntro, committeePageId, type Committee } from "../content/committees";
-import { Grid, Lede, Notice, Row, Rows, Section, TodoChip, Todo } from "../components/ui";
+import { A, Flag, Lede, Page, Section, Todo } from "../components/ui";
 import { email, page } from "../lib/links";
 
-const ABBR: Record<string, string> = {
-  "big-data": "BD", biorepository: "BR", bulbar: "BU", "clinical-research-nurse": "CN", "genetic-als-ftd": "GA",
-  imaging: "IM", nutrition: "NU", palliative: "PA", "physical-therapist": "PT", "recruitment-retention": "RR",
-  "research-coordinator": "RC", "technology-in-als": "TA", umnd: "UM", ventilation: "VE", "veterans-affairs": "VA",
-};
+const chairNames = (c: Committee) => c.chairs.map((p) => p.name.replace(/,.*$/, "")).join(", ");
 
 export function CommitteesHub() {
   return (
-    <div className="neals">
-      <Lede sub={<>{committeesIntro.sub} See <a href={committeesIntro.structureUrl} target="_blank" rel="noopener">committee co-chairs on neals.org</a>.</>}>
+    <Page id="committees">
+      <Lede sub={<>{committeesIntro.sub} Co-chairs are also listed on <A href={committeesIntro.structureUrl}>neals.org</A>.</>}>
         {committeesIntro.lede}
       </Lede>
-      <Grid size="sm">
-        {committees.map((c) => (
-          <a key={c.slug} className="n-committee" href={page(committeePageId(c))}>
-            <span className="n-committee-initial" aria-hidden="true">{ABBR[c.slug] ?? c.name.slice(0, 2)}</span>
-            <span className="n-committee-name">{c.name}</span>
-            <span className="n-committee-sum">{c.summary}</span>
-          </a>
-        ))}
-      </Grid>
 
-      <div className="n-split">
-        <Section title="Start a new committee">
-          {committeesIntro.start.map((p) => <p key={p}>{p}</p>)}
-        </Section>
-        <aside className="n-aside">
-          <h3>How committees work</h3>
-          <p className="n-small">From the NEALS Bylaws</p>
-          {committeesIntro.bylaws.map((p) => <p key={p} className="n-small">{p}</p>)}
-          <p className="n-small"><a href={page("bylaws-policies")}>Read the bylaws →</a></p>
-        </aside>
-      </div>
-    </div>
+      <table className="n-table n-table-committees">
+        <caption className="n-sr">NEALS committees</caption>
+        <thead><tr><th scope="col">Committee</th><th scope="col">Focus</th><th scope="col" className="n-hide-sm">Chairs</th></tr></thead>
+        <tbody>
+          {committees.map((c) => (
+            <tr key={c.slug}>
+              <th scope="row"><a href={page(committeePageId(c))}>{c.name}</a></th>
+              <td>{c.summary}</td>
+              <td className="n-muted n-hide-sm">{chairNames(c)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <Section title="Start a new committee">
+        {committeesIntro.start.map((p) => <p key={p}>{p}</p>)}
+      </Section>
+      <Section title="How committees work">
+        <p className="n-small">From the <a href={page("bylaws-policies")}>NEALS Bylaws</a>:</p>
+        <ul className="n-bullets">{committeesIntro.bylaws.map((p) => <li key={p}>{p}</li>)}</ul>
+      </Section>
+    </Page>
   );
 }
 
 export function CommitteePage({ c }: { c: Committee }) {
+  const id = committeePageId(c);
+  const facts = (
+    <aside className="n-facts-box" aria-label="Committee contacts">
+      <h2 className="n-h3">{c.chairs.length > 1 ? "Chairs" : "Chair"}</h2>
+      <ul>
+        {c.chairs.map((p) => {
+          const e = p.email ? email(p.email) : null;
+          return <li key={p.name}><strong>{p.name}</strong>{e && <a href={e.href}>{e.label}</a>}<Flag text={p.todo} /></li>;
+        })}
+      </ul>
+      <p className="n-small">To join, contact a chair. Membership normally lasts three years.</p>
+    </aside>
+  );
   return (
-    <div className="neals">
-      <Lede sub={<a href={page("committees")}>← All committees</a>}>{c.summary}</Lede>
+    <Page id={id}>
+      <Lede>{c.summary}</Lede>
       {c.todo && <Todo>{c.todo}</Todo>}
-
-      <div className="n-split">
+      <div className="n-twocol">
         <div>
-          {(c.about.length > 0 || c.mission) && (
-            <Section title="About the committee">
-              {c.about.map((p, i) => <p key={i}>{p}</p>)}
-              {c.mission && <blockquote className="n-quote"><b>Mission</b>{c.mission}</blockquote>}
-            </Section>
-          )}
+          {c.about.map((p, i) => <p key={i}>{p}</p>)}
+          {c.mission && <p className="n-mission"><strong>Mission.</strong> {c.mission}</p>}
           {c.goals && (
             <Section title={c.goalsTitle ?? "Goals"}>
-              <ol className="n-goals">{c.goals.map((g) => <li key={g}>{g}</li>)}</ol>
+              <ol className="n-numbered">{c.goals.map((g) => <li key={g}>{g}</li>)}</ol>
             </Section>
           )}
           {c.resources && (
             <Section title={c.resourcesTitle ?? "Resources"}>
-              <Rows>
+              <ul className="n-links">
                 {c.resources.map((r) => (
-                  <Row key={r.label} icon={r.note === "Video" ? "video" : r.url ? "doc" : "folder"} title={r.label} href={r.url}
-                    meta={r.note ? <span className="n-row-host">{r.note}</span> : undefined} note={r.todo} />
+                  <li key={r.label}>
+                    <A href={r.url}>{r.label}</A>{r.note && <span className="n-muted"> · {r.note}</span>}
+                    <Flag text={r.todo} />
+                  </li>
                 ))}
-              </Rows>
+              </ul>
             </Section>
           )}
         </div>
-        <aside className="n-aside">
-          <h3>{c.chairs.length > 1 ? "Chairs" : "Chair"}</h3>
-          <ul className="n-people">
-            {c.chairs.map((p) => {
-              const e = p.email ? email(p.email) : null;
-              return (
-                <li key={p.name}>
-                  <b>{p.name}</b>
-                  {e && <a href={e.href}>{e.label}</a>}
-                  <TodoChip text={p.todo} />
-                </li>
-              );
-            })}
-          </ul>
-          <h3>Get involved</h3>
-          <p className="n-small">Interested in joining? Contact a committee chair.</p>
-        </aside>
+        {facts}
       </div>
-      <Notice>Committee membership normally lasts three years, with no more than one member per affiliated institution. <a href={page("committees")}>How committees work →</a></Notice>
-    </div>
+    </Page>
   );
 }

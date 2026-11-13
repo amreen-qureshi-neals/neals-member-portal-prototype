@@ -29,7 +29,7 @@ export const pastMeetings: PastMeeting[] = [
   {
     year: 2025,
     resources: [
-      { kind: "recordings", label: "Livestream recordings", page: ["annualmeetingrecordings", "y2025"], todo: "Old page linked to the 2024 recordings by mistake" },
+      { kind: "recordings", label: "Livestream recordings", page: ["annualmeetingrecordings", "y2025"] },
       { kind: "abstracts", label: "Full poster abstracts (Muscle & Nerve)", url: "https://onlinelibrary.wiley.com/toc/10974598/2025/72/S1" },
       { kind: "posters", label: "Selected poster PDFs", url: "https://event.fourwaves.com/2025nealsmtg/abstracts" },
       { kind: "agenda", label: "Full meeting agenda", url: "https://meeting.neals.org/_files/ugd/bd7e5f_00f569f790bc45e2ae7944902a3733c2.pdf" },

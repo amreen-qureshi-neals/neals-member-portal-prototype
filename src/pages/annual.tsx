@@ -1,121 +1,145 @@
-import { recordings, countVideos, totalSeconds } from "../content/recordings";
-import { pastMeetings, upcoming, albums, albumsNote, olderAlbums, recordingNotes2026 } from "../content/meetings";
+import { recordings, countVideos, totalSeconds, type MeetingYear } from "../content/recordings";
+import { pastMeetings, upcoming, albums, albumsNote, olderAlbums, recordingNotes2026, type Resource } from "../content/meetings";
 import { viewingCode2026 } from "../content/webinars";
+import { A, Flag, Index, Lede, Note, OnThisPage, Page, Section, fmtDur } from "../components/ui";
 import { ViewingCode } from "./learning";
-import { Button, Fold, Grid, HubCard, JumpNav, Lede, Notice, Row, Rows, Section, TodoChip, VideoCard, fmtDur, Icon } from "../components/ui";
-import { ext, page } from "../lib/links";
-
-const kindIcon: Record<string, string> = { recordings: "video", abstracts: "doc", posters: "photo", agenda: "calendar", links: "external", partners: "people", extra: "star" };
+import { page } from "../lib/links";
 
 export function AnnualMeetingHub() {
   const latest = recordings[0];
   return (
-    <div className="neals">
-      <Lede sub="Everything from the NEALS Annual Meeting in one place: what's coming up, session recordings, and materials from past years.">
-        The NEALS Annual Meeting brings our network together every fall.
+    <Page id="annualmeeting">
+      <Lede sub="The NEALS Annual Meeting brings the network together every fall to share research progress, train site staff and plan what comes next.">
+        Everything from the Annual Meeting, past and upcoming.
       </Lede>
 
-      <div className="n-feature">
-        <div className="n-feature-text">
-          <span className="n-eyebrow">Save the date</span>
-          <h2>{upcoming.title}</h2>
-          <p className="n-feature-date"><Icon name="calendar" /> {upcoming.dates}</p>
-          <Button href={upcoming.url} icon="external">Visit the meeting site</Button>
-        </div>
-      </div>
+      <Section title={`${upcoming.year} Annual Meeting`}>
+        <dl className="n-facts">
+          <dt>Dates</dt><dd>{upcoming.dates}</dd>
+          <dt>Details & registration</dt><dd><A href={upcoming.url}>meeting.neals.org</A></dd>
+        </dl>
+      </Section>
 
-      <Grid size="md">
-        <HubCard href={page("annualmeetingrecordings")} icon="video" title="Session recordings"
-          text={`${countVideos(latest)} recordings from ${latest.year}, plus every session back to 2023.`}
-          links={recordings.map((r) => ({ label: `${r.year} recordings`, href: page("annualmeetingrecordings", `y${r.year}`) }))} />
-        <HubCard href={page("past-meetings")} icon="doc" title="Past meetings"
-          text="Agendas, published abstracts and poster libraries from 2021 onward."
-          links={pastMeetings.slice(0, 3).map((m) => ({ label: `${m.year} materials`, href: page("past-meetings", `m${m.year}`) }))} />
-        <HubCard href={page("photos")} icon="photo" title="Photos" text="Photo albums from past Annual Meetings." />
-      </Grid>
-    </div>
+      <Section title="In this section">
+        <Index items={[
+          { href: page("annualmeetingrecordings"), title: "Recordings", desc: `Session videos from 2023 to ${latest.year}, by year and day. ${countVideos(latest)} sessions from ${latest.year}.` },
+          { href: page("past-meetings"), title: "Past meetings", desc: "Agendas, published abstracts and poster libraries for every meeting since 2021." },
+          { href: page("photos"), title: "Photos", desc: "Photo albums from past meetings, 2016 onward." },
+        ]} />
+      </Section>
+    </Page>
+  );
+}
+
+function YearTable({ y }: { y: MeetingYear }) {
+  return (
+    <table className="n-table n-table-rec">
+      <caption className="n-sr">{y.year} recordings</caption>
+      <thead><tr><th scope="col">Session</th><th scope="col" className="n-num">Length</th></tr></thead>
+      {y.days.map((d) => (
+        <tbody key={d.label}>
+          <tr className="n-group"><th colSpan={2} scope="colgroup">{d.label}{d.note && <span className="n-group-note"> · {d.note}</span>}</th></tr>
+          {d.videos.map((v) => (
+            <tr key={v.url}>
+              <td><A href={v.url}>{v.title}</A></td>
+              <td className="n-num n-muted">{fmtDur(v.dur)}</td>
+            </tr>
+          ))}
+        </tbody>
+      ))}
+    </table>
   );
 }
 
 export function Recordings() {
-  const [latest, ...older] = recordings;
-  const yearBlock = (y: typeof latest) =>
-    y.days.map((d) => (
-      <div className="n-day" key={d.label}>
-        <h3>{d.label}{d.note && <span className="n-day-note">{d.note}</span>}</h3>
-        <Grid size="sm">
-          {d.videos.map((v) => <VideoCard key={v.url} {...v} label={String(y.year)} />)}
-        </Grid>
-      </div>
-    ));
+  const [latest] = recordings;
   return (
-    <div className="neals">
-      <Lede sub="Select any session to watch it. Videos open in a new tab. Earlier years are collapsed below.">
-        Missed a session, or want to revisit one? Every Annual Meeting recording, organized by year and day.
+    <Page id="annualmeetingrecordings">
+      <Lede sub="Select a session to watch it on Vimeo. Recordings open in a new tab.">
+        Every Annual Meeting session recording, by year and day.
       </Lede>
-      <JumpNav page="annualmeetingrecordings" items={recordings.map((r) => ({ id: `y${r.year}`, label: String(r.year) }))} />
+      <OnThisPage page="annualmeetingrecordings" items={recordings.map((r) => ({ id: `y${r.year}`, label: String(r.year) }))} />
 
-      <Section id={`y${latest.year}`} title={String(latest.year)} meta={<>{countVideos(latest)} recordings · {fmtDur(totalSeconds(latest))} · {latest.dates}</>}>
-        <ViewingCode code={viewingCode2026} what="recordings of 2026 member events" />
-        <p className="n-small">{recordingNotes2026.certificates}</p>
-        {yearBlock(latest)}
-      </Section>
-
-      <h3 className="n-overline">Previous years</h3>
-      {older.map((y) => (
-        <Fold key={y.year} id={`y${y.year}`} title={String(y.year)} meta={`${countVideos(y)} recordings · ${y.dates}${y.host === "dropbox" ? " · hosted on Dropbox" : ""}`}>
-          {yearBlock(y)}
-        </Fold>
+      {recordings.map((y) => (
+        <Section key={y.year} id={`y${y.year}`} title={`${y.year} Annual Meeting`}
+          meta={`${y.dates} · ${countVideos(y)} recordings${totalSeconds(y) && y === latest ? ` · ${fmtDur(totalSeconds(y))}` : ""}`}>
+          {y === latest && (
+            <>
+              <ViewingCode code={viewingCode2026} what="recordings of 2026 member events" />
+              <p className="n-small">{recordingNotes2026.certificates}</p>
+            </>
+          )}
+          {y.host === "dropbox" && <p className="n-small">2023 recordings are stored on Dropbox.</p>}
+          <YearTable y={y} />
+        </Section>
       ))}
-    </div>
+    </Page>
   );
 }
 
+const COLS: { kind: Resource["kind"][]; label: string }[] = [
+  { kind: ["recordings"], label: "Recordings" },
+  { kind: ["agenda"], label: "Agenda" },
+  { kind: ["abstracts"], label: "Abstracts" },
+  { kind: ["posters"], label: "Posters" },
+  { kind: ["links", "partners", "extra"], label: "Other" },
+];
+
 export function PastMeetings() {
+  const shortLabel = (r: Resource) =>
+    r.kind === "abstracts" ? "Muscle & Nerve" : r.kind === "recordings" ? "Watch" : r.kind === "agenda" ? "PDF" : r.kind === "posters" ? "Poster library" : r.label;
   return (
-    <div className="neals">
-      <Lede sub="Recordings link to the recordings page. Abstracts, posters and agendas open in a new tab.">
-        Looking for something from a past meeting? Materials are listed by year.
+    <Page id="past-meetings">
+      <Lede sub="Each row is one meeting. Abstracts were published in Muscle & Nerve; agendas and posters open in a new tab.">
+        Materials from every Annual Meeting since 2021.
       </Lede>
-      <JumpNav page="past-meetings" items={pastMeetings.map((m) => ({ id: `m${m.year}`, label: String(m.year) }))} />
-      {pastMeetings.map((m, i) => (
-        <Fold key={m.year} id={`m${m.year}`} title={`${m.year} Annual Meeting`} meta={`${m.resources.length} items`} open={i === 0}>
-          <Rows>
-            {m.resources.map((r) => (
-              <Row key={r.label} icon={kindIcon[r.kind]} title={r.label}
-                href={r.page ? page(r.page[0], r.page[1]) : r.url} note={r.todo} />
-            ))}
-          </Rows>
-        </Fold>
-      ))}
-    </div>
+      <table className="n-table n-table-matrix">
+        <colgroup><col className="n-col-year" /><col /><col /><col /><col /><col className="n-col-other" /></colgroup>
+        <caption className="n-sr">Past Annual Meeting materials by year</caption>
+        <thead><tr><th scope="col">Meeting</th>{COLS.map((c) => <th scope="col" key={c.label}>{c.label}</th>)}</tr></thead>
+        <tbody>
+          {pastMeetings.map((m) => (
+            <tr key={m.year} id={`m${m.year}`}>
+              <th scope="row">{m.year}</th>
+              {COLS.map((c) => {
+                const items = m.resources.filter((r) => c.kind.includes(r.kind));
+                return (
+                  <td key={c.label} data-label={c.label}>
+                    <div className="n-cell">
+                      {items.length === 0 ? <span className="n-muted">—</span> : items.map((r) => (
+                        <div key={r.label}>
+                          <A href={r.page ? page(r.page[0], r.page[1]) : r.url}>{c.label === "Other" ? r.label : shortLabel(r)}</A>
+                          <Flag text={r.todo} />
+                        </div>
+                      ))}
+                    </div>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Page>
   );
 }
 
 export function Photos() {
+  const all = [...albums, ...olderAlbums];
   return (
-    <div className="neals">
-      <Lede sub={<>Albums open in Dropbox in a new tab. Looking for session videos? See the <a href={page("annualmeetingrecordings")}>recordings</a>.</>}>
-        Relive the Annual Meeting: photo albums from past years.
-      </Lede>
-      <Grid size="sm">
-        {albums.map((a) => (
-          <a key={a.year} className="n-album" href={ext(a.url ?? "#")} target="_blank" rel="noopener">
-            <span className="n-album-cover">{a.cover && <img src={a.cover} alt="" loading="lazy" />}</span>
-            <span className="n-album-label"><b>{a.year}</b> Annual Meeting <Icon name="external" className="n-icon n-icon-sm" /></span>
-          </a>
+    <Page id="photos">
+      <Lede sub="Albums are hosted on Dropbox and open in a new tab.">Photo albums from past Annual Meetings.</Lede>
+      <ul className="n-albums">
+        {all.map((a) => (
+          <li key={a.year}>
+            <A href={a.url}>
+              {a.cover ? <img src={a.cover} alt="" loading="lazy" /> : <span className="n-albums-blank" aria-hidden="true" />}
+              <span>{a.year} Annual Meeting</span>
+            </A>
+          </li>
         ))}
-      </Grid>
-      <h3 className="n-overline">Earlier albums</h3>
-      <Grid size="sm">
-        {olderAlbums.map((a) => (
-          <a key={a.year} className="n-album n-album-plain" href={ext(a.url ?? "#")} target="_blank" rel="noopener">
-            <span className="n-album-label"><b>{a.year}</b> Annual Meeting{a.note ? ` · ${a.note}` : ""} <Icon name="external" className="n-icon n-icon-sm" /></span>
-          </a>
-        ))}
-      </Grid>
-      <Notice>{albumsNote}</Notice>
-      <TodoChip text="Covers are the existing YM thumbnails; consider moving albums off Dropbox" />
-    </div>
+      </ul>
+      <Note>{albumsNote} Looking for session videos? See <a href={page("annualmeetingrecordings")}>recordings</a>.</Note>
+    </Page>
   );
 }

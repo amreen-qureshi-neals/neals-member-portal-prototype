@@ -24,14 +24,6 @@ export type SitePage = {
   hidden?: boolean;
 };
 
-export const SECTIONS = [
-  { id: "annualmeeting", label: "Annual Meeting" },
-  { id: "learning", label: "Learning & Events" },
-  { id: "committees", label: "Committees" },
-  { id: "resources", label: "Resources" },
-  { id: "directory", label: "Directory" },
-] as const;
-
 export const PAGES: SitePage[] = [
   { id: "home", title: "Home", section: "home", kind: "content-area", ymTarget: "Homepage - Main (Top)", render: Home },
 
