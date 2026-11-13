@@ -16,7 +16,7 @@
   --n-flag: #8a4b00;
   --n-flag-bg: #fdf3e1;
   --n-serif: Georgia, "Times New Roman", serif;
-  --n-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --n-sans: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; /* same as the YM theme */
 
   color: var(--n-text);
   font-family: var(--n-sans);

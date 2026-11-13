@@ -72,7 +72,8 @@ function About() {
       <section className="n-section">
         <h2 className="n-h2">What isn't final</h2>
         <ul className="n-bullets">
-          <li>The header, menu and footer stand in for the YourMembership theme. The live portal uses YM's own header, sign-in and footer.</li>
+          <li>The header, menu, page title band, share buttons and footer copy the portal's current YourMembership theme, so pages appear as they will in YourMembership. The new menu items and footer are set up in YourMembership's menu and footer settings.</li>
+          <li>The homepage is shown without the theme's homepage extras (slideshow and side panels such as news and calendar). Those are set in YourMembership and will be switched off or kept as needed.</li>
           <li>The Events calendar and Member directory are standard YourMembership features, so they aren't redesigned here.</li>
           <li>Some pages are waiting for content, for example current Lectures &amp; opportunities listings and links to the committee file libraries.</li>
           <li>Wording, layout and section names are open to feedback.</li>
@@ -123,69 +124,80 @@ function App() {
 
   useEffect(() => { document.title = `${isMap ? "Page map" : isAbout ? "About this prototype" : p.title} · NEALS Member Portal prototype`; }, [p, isMap, isAbout]);
 
+  const title = isAbout ? "About this prototype" : isMap ? "Page map" : p.title;
   return (
     <>
       <div className="s-proto">
         <strong>Prototype for review</strong>, not the live member portal.
       </div>
-      <header className="s-header">
-        <div className="s-wrap s-header-row">
-          <a className="s-brand" href={page("home")}>
-            <img src={`${import.meta.env.BASE_URL}neals-logo.png`} alt="NEALS" className="s-logo" />
-            <small>Member Portal</small>
-          </a>
-          <nav className="s-utility" aria-label="Account">
-            <a href={page("SignUpForEmails")}>Mailing list</a>
-            <a href="#">Donate</a>
-            <a href="#">Merch store</a>
-            <a className="s-login" href="#">My profile</a>
+
+      {/* ---- Everything below mirrors the live YourMembership theme (YM-FX-02-A) ---- */}
+      <div className="ym-toolbar">
+        <div className="ym-container ym-toolbar-row">
+          <nav className="ym-toolbar-links" aria-label="Site tools">
+            <a href="#">Print Page</a><a href="#">Contact Us</a><a href="#">Report Abuse</a><a href="#">Sign Out</a>
           </nav>
+          <form className="ym-search" role="search" onSubmit={(e) => e.preventDefault()}>
+            <input type="search" placeholder="Enter search criteria..." aria-label="Search" />
+            <button type="submit" aria-label="Search"><span aria-hidden="true">⌕</span></button>
+          </form>
         </div>
-        <div className={`s-menu${menuOpen ? " is-open" : ""}`}>
-          <button type="button" className="s-menu-btn" aria-expanded={menuOpen} onClick={() => setMenuOpen((o) => !o)}>Menu</button>
-          <nav className="s-wrap s-nav" aria-label="Main" onClick={() => setMenuOpen(false)}>
-            <a href={page("home")} aria-current={p.id === "home" ? "page" : undefined}>Home</a>
-            {NAV.map((s) => (
-              <a key={s.id} href={page(s.id)} aria-current={section?.id === s.id ? "page" : undefined}>{s.label}</a>
+      </div>
+
+      <header className="ym-header">
+        <div className="ym-container ym-header-row">
+          <a className="ym-logo" href={page("home")}>
+            <img src={`${import.meta.env.BASE_URL}neals-mark.png`} alt="NEALS home" />
+          </a>
+          <button type="button" className="ym-menu-btn" aria-expanded={menuOpen} onClick={() => setMenuOpen((o) => !o)}>MENU <span aria-hidden="true">☰</span></button>
+          <nav className={`ym-menu${menuOpen ? " is-open" : ""}`} aria-label="Main" onClick={() => setMenuOpen(false)}>
+            <a href={page("home")} aria-current={p.id === "home" && !isMap && !isAbout ? "page" : undefined}>Home</a>
+            {NAV.map((sct) => (
+              <a key={sct.id} href={page(sct.id)} aria-current={!isMap && !isAbout && section?.id === sct.id ? "page" : undefined}>{sct.label}</a>
             ))}
           </nav>
         </div>
       </header>
 
-      <main className="s-wrap s-main">
-        {!isMap && !isAbout && p.id !== "home" && (
-          <nav className="s-crumbs" aria-label="Breadcrumb">
-            <a href={page("home")}>Home</a>
-            {section && section.id !== p.id && <><span aria-hidden="true"> › </span><a href={page(section.id)}>{section.label}</a></>}
-          </nav>
+      {p.id !== "home" || isMap || isAbout ? (
+        <div className="ym-titleband"><div className="ym-container"><h1>{title}</h1></div></div>
+      ) : null}
+
+      <main className="ym-container ym-main">
+        {p.id !== "home" && !isMap && !isAbout && (
+          <div className="ym-share" aria-hidden="true">
+            <span className="ym-share-plus">+</span> Share <span className="ym-share-sep">|</span>
+            <span className="ym-share-ico">f</span><span className="ym-share-ico">X</span><span className="ym-share-ico">✉</span><span className="ym-share-ico">in</span>
+          </div>
         )}
-        {!isMap && !isAbout && p.id !== "home" && <h1 className="s-title">{p.title}</h1>}
-        {isAbout ? (<><h1 className="s-title">About this prototype</h1><About /></>)
-          : isMap ? (<><h1 className="s-title">Page map</h1><PageMap /></>)
-          : p.render ? p.render() : <BuiltIn p={p} />}
+        {isAbout ? <About /> : isMap ? <PageMap /> : p.render ? p.render() : <BuiltIn p={p} />}
       </main>
 
-      <footer className="s-footer">
-        <div className="s-wrap s-footer-cols">
-          <div>
-            <img src={`${import.meta.env.BASE_URL}neals-logo-white.png`} alt="NEALS" className="s-footer-logo" />
-            <p>Network of Excellence for ALS<br />33 Arch Street, 16th Floor<br />Boston, MA 02110</p>
-          </div>
-          <div>
-            <h2>Portal</h2>
-            <ul>{NAV.map((s) => <li key={s.id}><a href={page(s.id)}>{s.label}</a></li>)}</ul>
-          </div>
-          <div>
-            <h2>neals.org</h2>
-            <ul>
-              <li><a href="https://neals.org/about/our-mission/">Our mission</a></li>
-              <li><a href="https://neals.org/about/neals-member-sites/">Member sites</a></li>
-              <li><a href="https://tools.neals.org/als-clinical-trials/">Search for a trial</a></li>
-              <li><a href="https://neals.org/about/contact-us/">Contact us</a></li>
-            </ul>
+      <footer>
+        <div className="ym-footer-area">
+          <div className="s-footer">
+            <div className="ym-container s-footer-cols">
+              <div>
+                <img src={`${import.meta.env.BASE_URL}neals-logo-white.png`} alt="NEALS" className="s-footer-logo" />
+                <p>Network of Excellence for ALS<br />33 Arch Street, 16th Floor<br />Boston, MA 02110</p>
+              </div>
+              <div>
+                <h2>Portal</h2>
+                <ul>{NAV.map((sct) => <li key={sct.id}><a href={page(sct.id)}>{sct.label}</a></li>)}</ul>
+              </div>
+              <div>
+                <h2>More</h2>
+                <ul>
+                  <li><a href={page("SignUpForEmails")}>Join the mailing list</a></li>
+                  <li><a href="#">Donate</a></li>
+                  <li><a href="#">NEALS Merch Store</a></li>
+                  <li><a href="https://neals.org/">neals.org</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="s-wrap s-footer-bottom">© {new Date().getFullYear()} Network of Excellence for ALS</div>
+        <div className="ym-copyright"><div className="ym-container">Membership Software Powered by <a href="#">YourMembership</a> &nbsp;::&nbsp; <a href="#">Legal</a></div></div>
       </footer>
     </>
   );
