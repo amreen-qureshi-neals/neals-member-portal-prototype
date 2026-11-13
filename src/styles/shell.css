@@ -15,21 +15,21 @@ body { margin: 0; background: #fff; color: #1f2a37; font-family: Verdana, Geneva
 @media (max-width: 480px) { .s-logo { height: 36px; } .s-brand small { display: none; } }
 .s-utility { display: flex; align-items: center; gap: 18px; font-size: 13px; }
 .s-utility a { color: #5b6675; text-decoration: none; }
-.s-utility a:hover { color: #205867; }
-.s-utility .s-login { background: #205867; color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; }
-.s-utility .s-login:hover { color: #fff; background: #163f4b; }
+.s-utility a:hover { color: #1f3866; }
+.s-utility .s-login { background: #1f3866; color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; }
+.s-utility .s-login:hover { color: #fff; background: #152848; }
 
 .s-menu-btn { display: none; }
 .s-nav { display: flex; gap: 4px; padding-bottom: 0; }
 .s-nav a { padding: 12px 14px; color: #1f2a37; text-decoration: none; font-size: 14px; font-weight: 700; border-bottom: 3px solid transparent; }
-.s-nav a:hover { color: #205867; }
-.s-nav a[aria-current="page"] { color: #205867; border-bottom-color: #205867; }
+.s-nav a:hover { color: #1f3866; }
+.s-nav a[aria-current="page"] { color: #1f3866; border-bottom-color: #1f3866; }
 
 .s-subnav { background: #f5f7f8; border-bottom: 1px solid #e2e6ea; }
 .s-subnav .s-wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; }
 .s-subnav a { white-space: nowrap; font-size: 13px; padding: 6px 12px; border-radius: 999px; color: #5b6675; text-decoration: none; }
-.s-subnav a:hover { color: #205867; }
-.s-subnav a[aria-current="page"] { background: #fff; color: #205867; font-weight: 700; box-shadow: 0 0 0 1px #e2e6ea; }
+.s-subnav a:hover { color: #1f3866; }
+.s-subnav a[aria-current="page"] { background: #fff; color: #1f3866; font-weight: 700; box-shadow: 0 0 0 1px #e2e6ea; }
 
 @media (max-width: 860px) {
   .s-utility a:not(.s-login) { display: none; }
@@ -39,7 +39,7 @@ body { margin: 0; background: #fff; color: #1f2a37; font-family: Verdana, Geneva
   .s-menu .s-nav { display: none; flex-direction: column; padding: 4px 16px 12px; }
   .s-menu.is-open .s-nav { display: flex; }
   .s-nav a { border-bottom: 0; border-left: 3px solid transparent; padding: 10px 12px; }
-  .s-nav a[aria-current="page"] { border-left-color: #205867; }
+  .s-nav a[aria-current="page"] { border-left-color: #1f3866; }
 }
 
 .s-main { padding-top: 22px; padding-bottom: 64px; min-height: 60vh; }
@@ -47,14 +47,14 @@ body { margin: 0; background: #fff; color: #1f2a37; font-family: Verdana, Geneva
 .s-crumbs a { color: #5b6675; }
 .s-title { font-family: Georgia, serif; font-size: clamp(28px, 4vw, 38px); line-height: 1.15; margin: 0 0 18px; color: #1f2a37; }
 
-.s-footer { background: #0c4564; color: #fff; padding: 40px 0 20px; font-size: 14px; }
+.s-footer { background: #172c52; color: #fff; padding: 40px 0 20px; font-size: 14px; }
 .s-footer-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px; }
 .s-footer-logo { display: block; height: 52px; width: auto; margin-bottom: 14px; }
 .s-footer p { color: rgba(255,255,255,.8); line-height: 1.6; }
 .s-footer h4 { font-size: 15px; margin: 0 0 10px; }
 .s-footer ul { list-style: none; margin: 0; padding: 0; }
 .s-footer li { margin: 0 0 8px; }
-.s-footer a { color: #9fd0f5; text-decoration: none; }
+.s-footer a { color: #b9cbe8; text-decoration: none; }
 .s-footer a:hover { color: #f2c95f; }
 .s-footer-bottom { border-top: 1px solid rgba(255,255,255,.2); margin-top: 28px; padding-top: 16px; text-align: center; font-size: 13px; color: rgba(255,255,255,.8); }
 
@@ -62,5 +62,5 @@ body { margin: 0; background: #fff; color: #1f2a37; font-family: Verdana, Geneva
 .s-map th, .s-map td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e2e6ea; vertical-align: top; }
 .s-map th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: #5b6675; }
 .s-map-id { font-size: 12px; color: #5b6675; font-family: ui-monospace, Menlo, monospace; }
-.s-new { background: #e8f1f3; color: #205867; font-weight: 700; padding: 2px 8px; border-radius: 999px; font-size: 12px; }
+.s-new { background: #e9eef6; color: #1f3866; font-weight: 700; padding: 2px 8px; border-radius: 999px; font-size: 12px; }
 @media (max-width: 600px) { .s-map th:nth-child(2), .s-map td:nth-child(2) { display: none; } }
