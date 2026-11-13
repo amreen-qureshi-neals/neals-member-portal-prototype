@@ -127,7 +127,6 @@ function App() {
     <>
       <div className="s-proto">
         <strong>Prototype for review</strong>, not the live member portal.
-        {isRedacted() && " Member-only links, email addresses and viewing codes are removed from this public preview."}
       </div>
       <header className="s-header">
         <div className="s-wrap s-header-row">
