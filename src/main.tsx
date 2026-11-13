@@ -128,8 +128,6 @@ function App() {
       <div className="s-proto">
         <strong>Prototype for review</strong>, not the live member portal.
         {isRedacted() && " Member-only links, email addresses and viewing codes are removed from this public preview."}
-        <a href="#/_about">About this prototype</a>
-        <a href="#/_map">Page map</a>
       </div>
       <header className="s-header">
         <div className="s-wrap s-header-row">

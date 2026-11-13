@@ -4,8 +4,7 @@ body { margin: 0; background: #fff; color: #2e343b; font-family: -apple-system, 
 .s-wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
 @media (min-width: 720px) { .s-wrap { padding: 0 32px; } }
 
-.s-proto { background: #fdf3e1; color: #8a4b00; font-size: 13px; text-align: center; padding: 6px 16px; }
-.s-proto a { color: inherit; font-weight: 600; margin-left: 14px; }
+.s-proto { background: #152848; color: #fff; font-size: 13px; text-align: center; padding: 7px 16px; }
 
 .s-header { border-bottom: 1px solid #d8dce2; background: #fff; }
 .s-header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 18px; padding-bottom: 14px; }
