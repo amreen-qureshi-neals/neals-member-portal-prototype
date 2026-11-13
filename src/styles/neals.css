@@ -31,7 +31,7 @@
 .neals a:focus-visible { outline: 2px solid var(--n-brand); outline-offset: 2px; border-radius: 2px; }
 .neals h2, .neals h3 { font-family: var(--n-serif); color: var(--n-ink); font-weight: 700; border: 0; padding: 0; letter-spacing: 0; text-transform: none; }
 .neals .n-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.neals .n-ext { font-size: .8em; margin-left: 3px; text-decoration: none; display: inline-block; }
+.neals .n-ext { font-size: .8em; text-decoration: none; }
 .neals .n-muted { color: var(--n-muted); }
 .neals .n-small { font-size: 14px; color: var(--n-muted); }
 .neals .n-nowrap { white-space: nowrap; }
@@ -84,7 +84,7 @@
 /* Past meetings: year × material matrix */
 .neals .n-table-matrix { table-layout: fixed; }
 .neals .n-table-matrix .n-col-year { width: 76px; }
-.neals .n-table-matrix .n-col-other { width: 26%; }
+.neals .n-table-matrix .n-col-other { width: 22%; }
 .neals .n-table-matrix th[scope="row"] { font-family: var(--n-serif); font-size: 18px; }
 .neals .n-table-matrix td { font-size: 14px; }
 .neals .n-table-matrix .n-cell > div + div { margin-top: 4px; }
@@ -137,6 +137,9 @@
 .neals .n-callout-text strong { font-weight: 700; }
 .neals .n-callout-link { margin-left: auto; font-size: 15px; }
 
+/* public preview: member-only link removed */
+.neals .n-redacted { color: var(--n-muted); text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }
+
 /* migration notes: prototype only */
 .neals .n-todo { background: var(--n-flag-bg); color: var(--n-flag); border-left: 3px solid #d99a3a; padding: 10px 14px; font-size: 14px; max-width: 70ch; }
 .neals .n-flag { display: block; margin-top: 3px; font-size: 12px; color: var(--n-flag); }
@@ -172,5 +175,7 @@
 /* ---------- photos ---------- */
 .neals .n-albums { list-style: none; margin: 0 0 24px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 24px; }
 .neals .n-albums li { margin: 0; }
-.neals .n-albums a { display: block; font-weight: 600; }
+.neals .n-albums a, .neals .n-albums-soon { display: block; font-weight: 600; }
+.neals .n-albums-soon .n-small { display: block; font-weight: 400; }
+.neals .n-albums .n-redacted { display: block; }
 .neals .n-albums img, .neals .n-albums-blank { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--n-tint); margin-bottom: 8px; }

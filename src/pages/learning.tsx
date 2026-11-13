@@ -69,12 +69,12 @@ export function Lectures() {
           <tr><td className="n-date n-muted">—</td><td className="n-muted">No upcoming listings right now.</td><td className="n-hide-sm" /></tr>
         </tbody>
       </table>
-      <Note title="Share an opportunity.">Members can submit upcoming lectures, series and events: <a href={c.href}>{isRedacted() ? "email NEALS" : c.label}</a>.</Note>
+      <Note title="Share an opportunity.">Members can submit upcoming lectures, series and events: <A href={c.href}>{c.label}</A>.</Note>
     </Page>
   );
 }
 
 /** Shows a Vimeo viewing password. Members-only pages; replaced with a placeholder in the public demo. */
 export function ViewingCode({ code, what }: { code: string; what: string }) {
-  return <Note title="Viewing code:"><span className="n-code">{isRedacted() ? "hidden in demo" : code}</span>. Enter it to watch {what}.</Note>;
+  return <Note title="Viewing code:">{isRedacted() ? <span className="n-redacted">removed in this public preview</span> : <span className="n-code">{code}</span>}. Enter it to watch {what}.</Note>;
 }

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { anchor, ext, linkMode, page } from "../lib/links";
+import { anchor, ext, isRedacted, linkMode, page } from "../lib/links";
 import { sectionOf } from "../nav";
 
 /* ---------- helpers ---------- */
@@ -17,10 +17,18 @@ const isExternal = (href: string) => /^https?:\/\//.test(href);
 /** Link that handles internal pages, external links (new tab + ↗) and redaction. */
 export function A({ href, children, className }: { href?: string; children: ReactNode; className?: string }) {
   if (!href) return <span className={className}>{children}</span>;
+  // Public preview: member-only links are removed. Show them as plain, clearly marked text.
+  if (isRedacted() && (href === "#" || (isExternal(href) && ext(href) === "#"))) {
+    return (
+      <span className={`n-redacted${className ? " " + className : ""}`} title="Member-only link: removed in this public preview">
+        {children}<span className="n-sr"> (member-only link removed in this preview)</span>
+      </span>
+    );
+  }
   if (isExternal(href)) {
     return (
       <a className={className} href={ext(href)} target="_blank" rel="noopener">
-        {children}<span className="n-ext" aria-hidden="true">↗</span><span className="n-sr"> (opens in a new tab)</span>
+        {children}<span className="n-ext" aria-hidden="true">{"\u00a0"}↗</span><span className="n-sr"> (opens in a new tab)</span>
       </a>
     );
   }
@@ -96,11 +104,11 @@ export const Note = ({ children, title }: { children: ReactNode; title?: string 
 
 /** Migration note: visible in the prototype only, never exported to YM. */
 export function Todo({ children }: { children: ReactNode }) {
-  if (linkMode() === "ym") return null;
+  if (linkMode() === "ym" || isRedacted()) return null;
   return <p className="n-todo"><strong>Content needed:</strong> {children}</p>;
 }
 export function Flag({ text }: { text?: string }) {
-  if (!text || linkMode() === "ym") return null;
+  if (!text || linkMode() === "ym" || isRedacted()) return null;
   return <span className="n-flag" title={text}>Check: {text}</span>;
 }
 

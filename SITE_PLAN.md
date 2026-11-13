@@ -45,21 +45,25 @@ Utility bar / footer: My Profile · Log in/out · Donate · Merch Store · Join 
 - Donate, Merch and Mailing List move out of the main menu into the utility bar and footer.
 - Drop: hidden Home, Untitled page, Old Newsletter.
 
-## Page templates (5 cover every page)
+## Page templates
+
+Every page uses the same frame: a **section sidebar** listing all pages in that section (current page marked), and a content column. On phones, the sidebar moves below the content and the breadcrumb shows the path.
 
 | Template | Used by | Built from |
 |---|---|---|
-| **Hub** | Annual Meeting, Learning & Events, Committees, Resources | Intro line + grid of section cards |
-| **Media library** | Recordings, Member Webinars | Video cards grouped by year or day; older years collapsed |
-| **Document library** | Bylaws/SOPs/Policies, Newsletters, Past Meetings | Grouped list with file type, date and short description |
-| **Committee** | 15 committees | Purpose · Chairs · Who should join · Meetings · Resources · Contact |
-| **Gallery** | Photos | Year cards with a cover photo linking to the album |
+| **Overview** | Annual Meeting, Learning & Events, Resources | One-line intro + index of the section's pages with a sentence each |
+| **Media table** | Recordings, Member Webinars | Table grouped by year/day: title (link), length or date, host |
+| **Document table** | Bylaws/SOPs/Policies, Newsletters, Toolkits | Table: document, format, updated |
+| **Year matrix** | Past meetings | One row per meeting; columns: recordings, agenda, abstracts, posters, other |
+| **Committee** | Committees list + 15 committee pages | List: table of committee / focus / chairs. Page: about, mission, goals, resources, chairs box |
+| **Gallery** | Photos | Album per year |
 
-**Homepage:** welcome line · next event · latest recordings · quick links to the 5 sections · announcements.
+**Homepage:** one-line intro · next meeting line · site index (each section + its pages) · recently added.
 
 ## Shared building blocks
 
-Page intro · Section header · Card grid · Video card · Document row · Person (chair) · Collapsible section · Button · Notice banner · Jump-to nav.
+Page frame with sidebar · Intro (h2) · Section heading · On-this-page links · Table · List · Index · Note · Facts box.
+Design rules: Georgia headings, system sans body, one accent (NEALS navy #1f3866), thin rules. No gradients, shadows, icon tiles or card grids.
 
 ## Ground rules
 

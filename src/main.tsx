@@ -29,26 +29,77 @@ function BuiltIn({ p }: { p: SitePage }) {
   return (
     <Page id={p.id}>
       <div className="n-lede">
-        <h2>In the live portal, this opens YourMembership's built-in {p.ymTarget}.</h2>
-        <p>It's a YM feature rather than a custom page, so it keeps YM's own layout. It only needs a menu link and the right visibility settings.</p>
+        <h2>In the live portal, this link opens YourMembership's built-in {p.ymTarget}.</h2>
+        <p>{p.ymTarget} is a standard YourMembership feature with its own layout, so it isn't redesigned in this prototype. Members reach it from the same menu and sidebar.</p>
       </div>
     </Page>
+  );
+}
+
+function About() {
+  const redacted = isRedacted();
+  return (
+    <div className="neals">
+      <div className="n-lede">
+        <h2>A clickable prototype of the redesigned NEALS member portal on YourMembership.</h2>
+        <p>It shows the proposed structure, navigation and page layouts, using real content from the current member portal (as of November 13, 2026).</p>
+      </div>
+
+      <section className="n-section">
+        <h2 className="n-h2">What's real</h2>
+        <ul className="n-bullets">
+          <li>The site structure: five sections (Annual Meeting, Learning &amp; Events, Committees, Resources, Directory), each with a sidebar listing its pages.</li>
+          <li>Titles and dates of recordings, webinars, newsletters, documents and past meetings.</li>
+          <li>Committee descriptions, missions, goals and chair names.</li>
+          <li>Page layouts, typography and colors (NEALS navy, taken from the logo).</li>
+        </ul>
+      </section>
+
+      {redacted && (
+        <section className="n-section">
+          <h2 className="n-h2">What's removed from this public preview</h2>
+          <p>This preview is hosted publicly on GitHub Pages, but the real portal is for members only. So the following are removed from the preview, both from the pages and from the site's code:</p>
+          <ul className="n-bullets">
+            <li>Links to session and webinar recordings (Vimeo, Dropbox and GoToWebinar)</li>
+            <li>Links to member documents and files, and the Recruitment &amp; Retention toolbox (Box)</li>
+            <li>All email addresses, including committee chairs and staff</li>
+            <li>The viewing code for 2026 recordings and webinars</li>
+          </ul>
+          <p>Removed links show as <span className="n-redacted">grey text with a dotted underline</span>. Public links still work: the meeting website, Muscle &amp; Nerve abstracts, poster libraries and neals.org. In the real portal, every link works as normal.</p>
+        </section>
+      )}
+
+      <section className="n-section">
+        <h2 className="n-h2">What isn't final</h2>
+        <ul className="n-bullets">
+          <li>The header, menu and footer stand in for the YourMembership theme. The live portal uses YM's own header, sign-in and footer.</li>
+          <li>The Events calendar and Member directory are standard YourMembership features, so they aren't redesigned here.</li>
+          <li>Some pages are waiting for content, for example current Lectures &amp; opportunities listings and links to the committee file libraries.</li>
+          <li>Wording, layout and section names are open to feedback.</li>
+        </ul>
+      </section>
+
+      <section className="n-section">
+        <h2 className="n-h2">How it becomes the live portal</h2>
+        <p>Each page here becomes a YourMembership page, built as plain HTML with one shared stylesheet and no scripts. Sign-in, registration, dues and payment pages are YourMembership system pages and aren't changed. The <a href="#/_map">page map</a> lists every page and what happens to it in YourMembership.</p>
+      </section>
+    </div>
   );
 }
 
 function PageMap() {
   return (
     <div className="neals">
-      <div className="n-lede"><h2>Every page in the prototype and where it goes in YourMembership.</h2></div>
+      <div className="n-lede"><h2>Every page in the prototype and what happens to it in YourMembership.</h2><p>“New page” means the page doesn't exist on the current portal yet. “Existing page” means the page exists and gets the new content and layout.</p></div>
       <table className="n-table">
-        <thead><tr><th scope="col">Page</th><th scope="col">Section</th><th scope="col">In YM</th><th scope="col">Action</th></tr></thead>
+        <thead><tr><th scope="col">Page</th><th scope="col">Section</th><th scope="col">Type in YM</th><th scope="col">Status</th></tr></thead>
         <tbody>
           {PAGES.map((p) => (
             <tr key={p.id}>
               <td><a href={page(p.id)}>{p.title}</a><div className="n-small">{p.kind === "custom" ? `/page/${p.id}` : p.ymTarget}</div></td>
               <td className="n-muted">{sectionOf(p.id)?.label ?? "Home"}</td>
               <td className="n-muted">{p.kind === "custom" ? "Custom page" : p.kind === "content-area" ? "Content area" : "Built-in feature"}</td>
-              <td>{p.kind === "built-in" ? "Link only" : p.status === "new" ? <strong>Create page</strong> : p.status === "existing" ? "Replace content" : "Replace content"}</td>
+              <td>{p.kind === "built-in" ? "Standard YM feature" : p.status === "new" ? <strong>New page</strong> : "Existing page"}</td>
             </tr>
           ))}
         </tbody>
@@ -61,6 +112,7 @@ function App() {
   const { id, anchor } = useRoute();
   const [menuOpen, setMenuOpen] = useState(false);
   const isMap = id === "_map";
+  const isAbout = id === "_about";
   const p = findPage(id) ?? findPage("home")!;
   const section = sectionOf(p.id);
 
@@ -69,13 +121,14 @@ function App() {
     document.getElementById(anchor)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [id, anchor]);
 
-  useEffect(() => { document.title = `${isMap ? "Page map" : p.title} · NEALS Member Portal prototype`; }, [p, isMap]);
+  useEffect(() => { document.title = `${isMap ? "Page map" : isAbout ? "About this prototype" : p.title} · NEALS Member Portal prototype`; }, [p, isMap, isAbout]);
 
   return (
     <>
       <div className="s-proto">
-        Prototype of the NEALS member portal redesign. Not the live site.
-        {isRedacted() && " Member-only links are disabled in this public demo."}
+        <strong>Prototype for review</strong>, not the live member portal.
+        {isRedacted() && " Member-only links, email addresses and viewing codes are removed from this public preview."}
+        <a href="#/_about">About this prototype</a>
         <a href="#/_map">Page map</a>
       </div>
       <header className="s-header">
@@ -103,14 +156,16 @@ function App() {
       </header>
 
       <main className="s-wrap s-main">
-        {!isMap && p.id !== "home" && (
+        {!isMap && !isAbout && p.id !== "home" && (
           <nav className="s-crumbs" aria-label="Breadcrumb">
             <a href={page("home")}>Home</a>
             {section && section.id !== p.id && <><span aria-hidden="true"> › </span><a href={page(section.id)}>{section.label}</a></>}
           </nav>
         )}
-        {!isMap && p.id !== "home" && <h1 className="s-title">{p.title}</h1>}
-        {isMap ? (<><h1 className="s-title">Page map</h1><PageMap /></>) : p.render ? p.render() : <BuiltIn p={p} />}
+        {!isMap && !isAbout && p.id !== "home" && <h1 className="s-title">{p.title}</h1>}
+        {isAbout ? (<><h1 className="s-title">About this prototype</h1><About /></>)
+          : isMap ? (<><h1 className="s-title">Page map</h1><PageMap /></>)
+          : p.render ? p.render() : <BuiltIn p={p} />}
       </main>
 
       <footer className="s-footer">

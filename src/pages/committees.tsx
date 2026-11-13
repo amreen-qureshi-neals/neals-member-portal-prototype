@@ -44,7 +44,7 @@ export function CommitteePage({ c }: { c: Committee }) {
       <ul>
         {c.chairs.map((p) => {
           const e = p.email ? email(p.email) : null;
-          return <li key={p.name}><strong>{p.name}</strong>{e && <a href={e.href}>{e.label}</a>}<Flag text={p.todo} /></li>;
+          return <li key={p.name}><strong>{p.name}</strong>{e && <A href={e.href}>{e.label}</A>}<Flag text={p.todo} /></li>;
         })}
       </ul>
       <p className="n-small">To join, contact a chair. Membership normally lasts three years.</p>

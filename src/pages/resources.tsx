@@ -37,7 +37,7 @@ export function Bylaws() {
   const c = email(governanceContact);
   return (
     <Page id="bylaws-policies">
-      <Lede sub={<>Questions or suggestions? Contact {governanceContactName}, <a href={c.href}>{c.label}</a>.</>}>
+      <Lede sub={<>Questions or suggestions? Contact {governanceContactName}, <A href={c.href}>{c.label}</A>.</>}>
         The documents that govern how NEALS works.
       </Lede>
       {governance.map((g) => (

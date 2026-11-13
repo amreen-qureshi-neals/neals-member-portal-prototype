@@ -49,5 +49,5 @@ export function ext(url: string): string {
 }
 
 export function email(addr: string): { href: string; label: string } {
-  return config.redact ? { href: "#", label: "Email hidden in demo" } : { href: `mailto:${addr}`, label: addr };
+  return config.redact ? { href: "#", label: "email removed in preview" } : { href: `mailto:${addr}`, label: addr };
 }

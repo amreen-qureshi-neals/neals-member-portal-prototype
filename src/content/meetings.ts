@@ -1,5 +1,5 @@
 export type Resource = {
-  kind: "recordings" | "abstracts" | "posters" | "agenda" | "links" | "partners" | "extra";
+  kind: "recordings" | "abstracts" | "posters" | "agenda" | "photos" | "links" | "partners" | "extra";
   label: string;
   url?: string;
   /** internal page link: [pageId, anchor] */
@@ -76,6 +76,7 @@ export type Album = { year: string; url?: string; cover?: string; note?: string 
 const cdn = (p: string) => `https://cdn.ymaws.com/neals.site-ym.com/resource/resmgr/annualmeeting/${p}`;
 
 export const albums: Album[] = [
+  { year: "2026", note: "Album coming soon" },
   { year: "2025", url: "#", cover: cdn("2025_am_photo_icon.png") },
   { year: "2023", url: "#", cover: cdn("2023_am_photo_icon.png") },
   { year: "2022", url: "#", cover: cdn("2022_am_photo_icon.png") },
