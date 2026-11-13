@@ -1,0 +1,10 @@
+node_modules/
+dist/
+dist-ym/
+.env
+.env.*
+.DS_Store
+# Raw copies from YM / WildApricot: member-only links, keep out of git
+originals/
+annual_meeting.html
+annual_meeting copy.html

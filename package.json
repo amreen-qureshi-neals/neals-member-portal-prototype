@@ -1,0 +1,28 @@
+{
+  "name": "neals-member-portal",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "NEALS member portal pages for YourMembership: prototype + static snippet export",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:demo": "tsc --noEmit && VITE_REDACT=1 vite build",
+    "export": "tsx scripts/export.tsx",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.7.0",
+    "tsx": "4.19.2",
+    "typescript": "5.6.3",
+    "vite": "5.4.21"
+  }
+}
